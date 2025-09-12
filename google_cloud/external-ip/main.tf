@@ -13,6 +13,6 @@ resource "google_compute_address" "external_ip_address" {
 # Save external IP address to a file
 resource "local_file" "external_ip_file" {
   content  = google_compute_address.external_ip_address.address
-  filename = "../../../../external_ip_${var.name_prefix}.txt"
+  filename = "../../../../../external_ip_${var.name_prefix}.txt"
 }
 
