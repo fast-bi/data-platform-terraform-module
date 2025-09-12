@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://fast.bi">
-    <img src="https://fast.bi/logo.png" alt="Fast.BI Logo" width="200">
+    <img src="https://wiki.fast.bi/logo_transparent_original.png" alt="Fast.BI Logo" width="200">
   </a>
 </p>
 
