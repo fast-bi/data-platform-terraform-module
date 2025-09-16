@@ -11,7 +11,7 @@ resource "google_dns_managed_zone" "public_zone" {
 # Save DNS zone name servers to a file (just the name servers)
 resource "local_file" "dns_zone_nameservers" {
   content  = join("\n", google_dns_managed_zone.public_zone.name_servers)
-  filename = "../../../../dns_zone_nameservers.txt"
+  filename = "../../../../../dns_zone_nameservers.txt"
 }
 
 # Save complete DNS zone information to a file
@@ -20,5 +20,5 @@ resource "local_file" "dns_zone_complete_info" {
 ${google_dns_managed_zone.public_zone.dns_name}	NS	21600	
 ${join("\n", google_dns_managed_zone.public_zone.name_servers)}
 EOT
-  filename = "../../../../dns_zone_complete_info.txt"
+  filename = "../../../../../dns_zone_complete_info.txt"
 }
