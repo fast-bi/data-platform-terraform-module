@@ -82,7 +82,7 @@ resource "google_service_account_key" "service_account_keys" {
 resource "local_file" "sa_key" {
   count    = var.generate_keys_for_sa ? 1 : 0
   content  = google_service_account_key.service_account_keys[var.sa_names[0]].private_key
-  filename = "../../../../../sa_key.txt"
+  filename = var.output_path != "" ? "${var.output_path}/sa_key.txt" : "../../../../../sa_key.txt"
 
   depends_on = [google_service_account_key.service_account_keys]
 
@@ -120,7 +120,7 @@ resource "google_service_account_iam_member" "workload_identity_binding" {
 # Save service account email to file for external use
 resource "local_file" "sa_name" {
   content  = "service_account_email=${google_service_account.service_accounts[var.sa_names[0]].email}"
-  filename = "../../../../../sa_name.txt"
+  filename = var.output_path != "" ? "${var.output_path}/sa_name.txt" : "../../../../../sa_name.txt"
 
   depends_on = [time_sleep.wait_for_sa_creation]
 

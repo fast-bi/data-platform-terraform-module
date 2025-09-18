@@ -46,3 +46,9 @@ variable "handle_existing_gracefully" {
   type        = bool
   default     = true
 }
+
+variable "output_path" {
+  description = "Path to save output files (service account keys, names, etc.)"
+  type        = string
+  default     = ""
+}

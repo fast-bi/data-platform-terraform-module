@@ -9,3 +9,9 @@ variable "zone_name" {
 variable "domain_name" {
   description = "The Domain of the DNS zone."
 }
+
+variable "output_path" {
+  description = "Path to save output files (DNS zone info, nameservers, etc.)"
+  type        = string
+  default     = ""
+}

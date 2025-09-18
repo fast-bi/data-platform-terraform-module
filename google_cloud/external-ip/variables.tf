@@ -35,3 +35,9 @@ variable "description" {
   type        = string
   default     = ""
 }
+
+variable "output_path" {
+  description = "Path to save output files (external IP address, etc.)"
+  type        = string
+  default     = ""
+}
