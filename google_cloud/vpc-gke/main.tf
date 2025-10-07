@@ -1,6 +1,6 @@
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 4.0"
+  version = "~> 12.0.0"
 
   project_id              = var.project
   network_name            = "${var.env}-${var.name}-network"
@@ -29,7 +29,7 @@ module "vpc" {
 
   }
 }
-## this needed because, after vpc creation, there should be some kind of pause, before VPC resource is "visible" 
+## this needed because, after vpc creation, there should be some kind of pause, before VPC resource is "visible"
 resource "time_sleep" "wait_30_seconds" {
   depends_on = [module.vpc]
 

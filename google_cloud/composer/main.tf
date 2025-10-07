@@ -89,23 +89,23 @@ locals {
 }
 
 module "addresses" {
-  source             = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address"
+  source             = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-address?ref=v45.0.0"
   project_id         = var.shared_vpc_project
   external_addresses = local.external_addresses
 
 }
 
 module "nat" {
-  for_each              = { for index, nat in var.cloud_nat : nat.name => nat }
-  source                = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-cloudnat"
-  name                  = each.value.name
-  project_id            = var.shared_vpc_project
-  region                = each.value.region
-  addresses             = [module.addresses.external_addresses["${each.value.external_address_name}"].self_link]
-  config_source_subnets = "LIST_OF_SUBNETWORKS"
-  router_create         = each.value.router_create
-  router_name           = each.value.router_name
-  router_network        = var.network_name
+  for_each                  = { for index, nat in var.cloud_nat : nat.name => nat }
+  source                    = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/net-cloudnat?ref=v45.0.0"
+  name                      = each.value.name
+  project_id                = var.shared_vpc_project
+  region                    = each.value.region
+  addresses                 = [module.addresses.external_addresses["${each.value.external_address_name}"].self_link]
+  config_source_subnetworks = "LIST_OF_SUBNETWORKS"
+  router_create             = each.value.router_create
+  router_name               = each.value.router_name
+  router_network            = var.network_name
   subnetworks = [{
     self_link            = google_compute_subnetwork.composer_subnetwork.self_link
     config_source_ranges = ["ALL_IP_RANGES"]

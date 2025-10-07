@@ -45,16 +45,16 @@ Creates a Google Kubernetes Engine cluster with secondary subnets for pods and s
 ```hcl
 module "gke_cluster" {
   source = "git::https://github.com/fast-bi/terraform-modules.git//google_cloud/gke-cluster"
-  
+
   project     = "my-project"
   location    = "us-central1"
   name        = "fastbi-cluster"
   network     = "projects/my-project/global/networks/fastbi-vpc"
   subnetwork  = "projects/my-project/regions/us-central1/subnetworks/fastbi-subnet"
-  
+
   min_node_count = "3"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -333,11 +333,11 @@ graph TD
     C --> D[gke-cluster]
     D --> E[deploy_sa]
     E --> F[workload-identity]
-    
+
     C --> G[cloud-dns]
     C --> H[external-ip]
     C --> I[fw-add]
-    
+
     D --> J[artifact-registry]
     D --> K[composer]
 ```
@@ -348,7 +348,7 @@ graph TD
 graph TD
     A[vpc] --> B[eks]
     B --> C[addons-roles]
-    
+
     A --> D[security-groups]
     A --> E[route-tables]
 ```
@@ -400,11 +400,11 @@ inputs = {
   # Network security
   enable_private_nodes = true
   disable_public_endpoint = true
-  
+
   # Identity security
   enable_workload_identity = true
   enable_secrets_database_encryption = true
-  
+
   # Access control
   master_authorized_networks_config = [{
     cidr_blocks = [{
@@ -422,14 +422,14 @@ inputs = {
 inputs = {
   # Use preemptible instances
   preemptible = true
-  
+
   # Smaller node pools
   min_node_count = 1
   max_node_count = 5
-  
+
   # Efficient machine types
   machine_type = "e2-standard-2"
-  
+
   # Auto-scaling
   enable_vertical_pod_autoscaling = true
 }
@@ -503,7 +503,7 @@ inputs = {
 inputs = {
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
-  
+
   # Set up alerts
   enable_vertical_pod_autoscaling = true
 }

@@ -37,4 +37,4 @@ module "kubeconfig" {
 
 ## Example
 
-This module is typically used after creating a GKE cluster to generate the kubeconfig file needed for deploying applications to the cluster. 
+This module is typically used after creating a GKE cluster to generate the kubeconfig file needed for deploying applications to the cluster.

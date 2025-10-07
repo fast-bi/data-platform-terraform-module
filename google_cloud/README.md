@@ -165,17 +165,17 @@ All GCP modules are production-ready and fully tested. These modules provide com
 # Create a GKE cluster
 module "gke_cluster" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/gke-cluster"
-  
+
   project     = "my-project"
   location    = "us-central1"
   region      = "us-central1"
   name        = "fastbi-cluster"
   network     = "projects/my-project/global/networks/fastbi-vpc"
   subnetwork  = "projects/my-project/regions/us-central1/subnetworks/fastbi-subnet"
-  
+
   min_node_count = "3"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -192,11 +192,11 @@ graph TD
     C --> D[gke-cluster]
     D --> E[deploy_sa]
     E --> F[workload-identity]
-    
+
     C --> G[cloud-dns]
     C --> H[external-ip]
     C --> I[fw-add]
-    
+
     D --> J[artifact-registry]
     D --> K[composer]
 ```
@@ -207,12 +207,12 @@ graph TD
 # Security-hardened GKE cluster
 module "gke_cluster" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/gke-cluster"
-  
+
   # Network security
   enable_private_nodes = true
   disable_public_endpoint = true
   master_ipv4_cidr_block = "172.16.0.0/28"
-  
+
   # Access control
   master_authorized_networks_config = [{
     cidr_blocks = [{
@@ -220,11 +220,11 @@ module "gke_cluster" {
       display_name = "corporate_network"
     }]
   }]
-  
+
   # Encryption
   enable_secrets_database_encryption = true
   enable_workload_identity = true
-  
+
   # Monitoring
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
@@ -259,10 +259,10 @@ inputs = {
   max_node_count = 20
   machine_type   = "e2-standard-4"
   preemptible    = false
-  
+
   # High availability
   node_locations = ["us-central1-a", "us-central1-b", "us-central1-c"]
-  
+
   # Security
   enable_private_nodes = true
   enable_workload_identity = true
@@ -298,7 +298,7 @@ inputs = {
 inputs = {
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
-  
+
   # Enable monitoring addons
   enable_vertical_pod_autoscaling = true
 }
@@ -368,7 +368,7 @@ This module is licensed under the [MIT License](../LICENSE).
 
 <p align="center">
   <strong>Ready to deploy on Google Cloud Platform?</strong><br>
-  <a href="https://fast.bi">Get Started with Fast.BI</a> • 
-  <a href="https://wiki.fast.bi">Documentation</a> • 
+  <a href="https://fast.bi">Get Started with Fast.BI</a> •
+  <a href="https://wiki.fast.bi">Documentation</a> •
   <a href="https://github.com/fast-bi/data-platform-terraform-module/issues">Report Issues</a>
 </p>

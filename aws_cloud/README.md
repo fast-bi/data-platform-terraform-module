@@ -54,13 +54,13 @@ AWS modules are in active development with core infrastructure components availa
 # Create an EKS cluster
 module "eks" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//aws_cloud/eks"
-  
+
   region         = "us-west-2"
   cluster_name   = "fastbi-cluster"
   cluster_version = "1.28"
   vpc_id         = module.vpc.vpc_id
   subnet_ids     = module.vpc.private_subnet_ids
-  
+
   eks_managed_node_groups = {
     main = {
       min_size     = 1
@@ -80,10 +80,10 @@ module "eks" {
 graph TD
     A[vpc] --> B[eks]
     B --> C[addons-roles]
-    
+
     A --> D[security-groups]
     A --> E[route-tables]
-    
+
     B --> F[managed-node-groups]
     B --> G[self-managed-node-groups]
 ```
@@ -94,12 +94,12 @@ graph TD
 # Security-hardened EKS cluster
 module "eks" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//aws_cloud/eks"
-  
+
   # Cluster endpoint configuration
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   cluster_endpoint_public_access_cidrs = ["10.0.0.0/8"]
-  
+
   # Node group configuration
   eks_managed_node_groups = {
     main = {
@@ -107,7 +107,7 @@ module "eks" {
       max_size     = 10
       desired_size = 5
       instance_types = ["t3.medium"]
-      
+
       labels = {
         Environment = "production"
         Team        = "data-platform"
@@ -152,13 +152,13 @@ inputs = {
       desired_size = 5
       instance_types = ["t3.medium", "t3.large"]
     }
-    
+
     spot = {
       min_size     = 0
       max_size     = 10
       desired_size = 3
       instance_types = ["t3.medium", "t3.large"]
-      
+
       taints = [
         {
           key    = "spot"
@@ -290,7 +290,7 @@ This module is licensed under the [MIT License](../LICENSE).
 
 <p align="center">
   <strong>Ready to deploy on Amazon Web Services?</strong><br>
-  <a href="https://fast.bi">Get Started with Fast.BI</a> • 
-  <a href="https://wiki.fast.bi">Documentation</a> • 
+  <a href="https://fast.bi">Get Started with Fast.BI</a> •
+  <a href="https://wiki.fast.bi">Documentation</a> •
   <a href="https://github.com/fast-bi/data-platform-terraform-module/issues">Report Issues</a>
 </p>

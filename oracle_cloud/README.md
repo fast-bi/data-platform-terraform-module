@@ -118,11 +118,11 @@ graph TD
     B --> C[OKE]
     C --> D[IAM]
     D --> E[Workload Identity]
-    
+
     B --> F[Load Balancer]
     B --> G[DNS]
     B --> H[Security Lists]
-    
+
     C --> I[Object Storage]
     C --> J[Vault]
     C --> K[Monitoring]
@@ -134,19 +134,19 @@ graph TD
 # Planned security-hardened OKE cluster
 module "oke" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//oracle_cloud/oke"
-  
+
   # Network security
   private_cluster_enabled = true
   network_plugin = "oci"
-  
+
   # Identity and access
   workload_identity_enabled = true
   service_account_enabled = true
-  
+
   # Security features
   enable_pod_security_policy = true
   enable_network_policy = true
-  
+
   # Monitoring
   monitoring_enabled = true
   log_analytics_enabled = true
@@ -168,7 +168,7 @@ module "oke" {
 # Planned basic OKE deployment
 module "oke" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//oracle_cloud/oke"
-  
+
   compartment_id = "ocid1.compartment.oc1..example"
   vcn_id        = module.vcn.vcn_id
   cluster_name   = "fastbi-cluster"
@@ -274,7 +274,7 @@ This module is licensed under the [MIT License](../LICENSE).
 
 <p align="center">
   <strong>Interested in Oracle Cloud support?</strong><br>
-  <a href="https://github.com/fast-bi/data-platform-terraform-module/discussions">Join the Discussion</a> • 
-  <a href="https://fast.bi">Get Started with Fast.BI</a> • 
+  <a href="https://github.com/fast-bi/data-platform-terraform-module/discussions">Join the Discussion</a> •
+  <a href="https://fast.bi">Get Started with Fast.BI</a> •
   <a href="https://wiki.fast.bi">Documentation</a>
 </p>

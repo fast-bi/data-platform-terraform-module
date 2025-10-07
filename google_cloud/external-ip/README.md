@@ -14,7 +14,7 @@ This module creates Google Cloud external IP addresses and saves the IP address 
 ```hcl
 module "external_ip" {
   source = "path/to/external-ip"
-  
+
   project     = "my-project-id"
   region      = "us-central1"
   name_prefix = "traefik"
@@ -56,7 +56,7 @@ The module automatically creates a local file with the external IP address:
 ```hcl
 module "traefik_ip" {
   source = "path/to/external-ip"
-  
+
   project     = "my-project"
   region      = "us-central1"
   name_prefix = "traefik"
@@ -68,7 +68,7 @@ module "traefik_ip" {
 ```hcl
 module "custom_ip" {
   source = "path/to/external-ip"
-  
+
   project       = "my-project"
   region        = "us-central1"
   overwrite_name = "my-custom-external-ip"

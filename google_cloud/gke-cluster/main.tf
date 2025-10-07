@@ -7,7 +7,7 @@ terraform {
   # This module is now only being tested with Terraform 1.0.x. However, to make upgrading easier, we are setting
   # 0.12.26 as the minimum version, as that version added support for required_providers with source URLs, making it
   # forwards compatible with 1.0.x code.
-  required_version = ">= 0.12.26"
+  required_version = ">= 0.13"
 }
 
 locals {
@@ -21,10 +21,6 @@ locals {
 }
 data "google_project" "project" {
   project_id = var.project
-}
-
-data "google_service_account" "kubernetes-service-agent" {
-  account_id = "service-${data.google_project.project.number}"
 }
 
 
@@ -141,7 +137,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   # network_policy {
-  #   enabled = var.enable_dataplane_v2 
+  #   enabled = var.enable_dataplane_v2
 
   #   # Tigera (Calico Felix) is the only provider
   #   provider = var.enable_dataplane_v2 ? "PROVIDER_UNSPECIFIED" : "CALICO"
@@ -316,38 +312,33 @@ resource "google_container_node_pool" "node_pool" {
 data "google_service_account" "gke_service_account" {
   account_id = "${var.env}-${var.cluster_service_account_name}"
   project    = var.project
-  
+
   depends_on = [time_sleep.wait_for_gke_service_account]
 }
 
 # Wait for service account to be fully propagated
 resource "time_sleep" "wait_for_service_account" {
-  depends_on = [data.google_service_account.gke_service_account]
+  depends_on      = [data.google_service_account.gke_service_account]
   create_duration = "30s"
 }
 
 # Only create IAM bindings if we're using a shared VPC (network_project != project)
 module "iam_user" {
-  count  = var.network_project != var.project ? 1 : 0
-  source = "github.com/terraform-google-modules/terraform-google-iam//modules/projects_iam?ref=v7.4.0"
+  source                       = "github.com/GoogleCloudPlatform/cloud-foundation-fabric.git//modules/iam-service-account?ref=v45.0.0"
+  project_id                   = var.network_project
+  name                         = data.google_service_account.gke_service_account.account_id
+  create_ignore_already_exists = true
 
-  projects = ["${var.network_project}"]
-
-  bindings = {
-    "roles/compute.networkAdmin" = [
-      "serviceAccount:${data.google_service_account.gke_service_account.email}",
-    ]
-    "roles/container.hostServiceAgentUser" = [
-      "serviceAccount:${data.google_service_account.gke_service_account.email}",
-    ]
-    "roles/container.serviceAgent" = [
-      "serviceAccount:${data.google_service_account.gke_service_account.email}",
-    ]
-    "roles/compute.orgFirewallPolicyAdmin" = [
-      "serviceAccount:${data.google_service_account.gke_service_account.email}",
+  # Non-authoritative roles granted *to* the service account on the shared VPC project
+  iam_project_roles = {
+    "${var.network_project}" = [
+      "roles/compute.networkAdmin",
+      "roles/container.hostServiceAgentUser",
+      "roles/container.serviceAgent",
+      "roles/compute.orgFirewallPolicyAdmin"
     ]
   }
-  
+
   depends_on = [time_sleep.wait_for_service_account]
 }
 
@@ -373,12 +364,12 @@ resource "google_service_account" "gke_service_account" {
 # Assign roles to the service account
 resource "google_project_iam_member" "gke_service_account_roles" {
   for_each = toset(var.service_account_roles)
-  
+
   project = var.project
   role    = each.value
   member  = "serviceAccount:${google_service_account.gke_service_account.email}"
-  
-  depends_on = [google_service_account.gke_service_account]
+
+  depends_on = []
 }
 
 # Wait for service account and roles to be fully created
@@ -438,4 +429,4 @@ kubectl \
   patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
   EOH
   }
-} 
+}

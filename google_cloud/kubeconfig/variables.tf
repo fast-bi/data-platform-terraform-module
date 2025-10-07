@@ -21,4 +21,4 @@ variable "output_path" {
   description = "The path where the kubeconfig file should be saved"
   type        = string
   default     = "./kubeconfig"
-} 
+}

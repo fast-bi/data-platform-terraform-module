@@ -5,7 +5,7 @@
 # Create service accounts
 resource "google_service_account" "service_accounts" {
   for_each = toset(var.sa_names)
-  
+
   account_id   = each.value
   project      = var.project
   display_name = var.sa_display_name != "" ? var.sa_display_name : each.value
@@ -26,20 +26,20 @@ resource "google_service_account" "service_accounts" {
 # Wait for service accounts to be fully created before proceeding
 resource "time_sleep" "wait_for_sa_creation" {
   depends_on = [google_service_account.service_accounts]
-  
+
   create_duration = "30s"
 }
 
 # Assign project roles to ALL service accounts (not just the first one)
 resource "google_project_iam_member" "project_roles" {
   for_each = {
-    for pair in setproduct(var.sa_names, var.project_roles) : 
+    for pair in setproduct(var.sa_names, var.project_roles) :
     "${pair[0]}-${split("=>", pair[1])[1]}" => {
       sa_name = pair[0]
       role    = split("=>", pair[1])[1]
     }
   }
-  
+
   project = var.project
   role    = each.value.role
   member  = "serviceAccount:${google_service_account.service_accounts[each.value.sa_name].email}"
@@ -62,9 +62,9 @@ resource "google_service_account_key" "service_account_keys" {
   for_each = var.generate_keys_for_sa ? toset(var.sa_names) : []
 
   service_account_id = google_service_account.service_accounts[each.value].name
-  key_algorithm     = "KEY_ALG_RSA_2048"
-  private_key_type  = "TYPE_GOOGLE_CREDENTIALS_FILE"
-  
+  key_algorithm      = "KEY_ALG_RSA_2048"
+  private_key_type   = "TYPE_GOOGLE_CREDENTIALS_FILE"
+
   depends_on = [time_sleep.wait_for_sa_creation]
 
   lifecycle {
@@ -98,7 +98,7 @@ resource "local_file" "sa_key" {
 # Create workload identity mappings if provided
 resource "google_service_account_iam_member" "workload_identity_binding" {
   for_each = {
-    for idx, mapping in var.wid_mapping_to_sa : 
+    for idx, mapping in var.wid_mapping_to_sa :
     "${mapping.k8s_sa_name}-${mapping.namespace}" => mapping
   }
 

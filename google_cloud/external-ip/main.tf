@@ -15,4 +15,3 @@ resource "local_file" "external_ip_file" {
   content  = google_compute_address.external_ip_address.address
   filename = var.output_path != "" ? "${var.output_path}/external_ip_${var.name_prefix}.txt" : "../../../../../external_ip_${var.name_prefix}.txt"
 }
-

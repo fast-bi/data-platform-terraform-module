@@ -11,7 +11,7 @@ This guide provides step-by-step instructions for deploying Fast.BI infrastructu
    # Install via package manager
    brew install terraform  # macOS
    apt-get install terraform  # Ubuntu
-   
+
    # Or download from https://www.terraform.io/downloads.html
    ```
 
@@ -19,18 +19,18 @@ This guide provides step-by-step instructions for deploying Fast.BI infrastructu
    ```bash
    # Install via package manager
    brew install terragrunt  # macOS
-   
+
    # Or download from https://terragrunt.gruntwork.io/docs/getting-started/install/
    ```
 
 3. **Cloud Provider CLI Tools**
-   
+
    **Google Cloud SDK** (for GCP):
    ```bash
    # Install gcloud CLI
    curl https://sdk.cloud.google.com | bash
    exec -l $SHELL
-   
+
    # Authenticate
    gcloud auth login
    gcloud auth application-default login
@@ -40,7 +40,7 @@ This guide provides step-by-step instructions for deploying Fast.BI infrastructu
    ```bash
    # Install AWS CLI
    pip install awscli
-   
+
    # Configure
    aws configure
    ```
@@ -182,13 +182,13 @@ inputs = {
   name        = "fastbi-cluster"
   network     = dependency.vpc.outputs.network
   subnetwork  = dependency.vpc.outputs.subnet
-  
+
   min_node_count = "3"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
-  
+
   enable_private_nodes = true
   enable_workload_identity = true
 }
@@ -203,7 +203,7 @@ terraform {
 inputs = {
   project  = "fastbi-production"
   sa_names = ["fastbi-deploy", "fastbi-monitor", "fastbi-data"]
-  
+
   project_roles = [
     "fastbi-production=>roles/storage.admin",
     "fastbi-production=>roles/logging.logWriter",
@@ -305,7 +305,7 @@ inputs = {
   cluster_version = "1.28"
   vpc_id         = dependency.vpc.outputs.vpc_id
   subnet_ids     = dependency.vpc.outputs.private_subnet_ids
-  
+
   eks_managed_node_groups = {
     main = {
       min_size     = 1
@@ -400,10 +400,10 @@ inputs = merge(
 # In your GKE configuration
 inputs = {
   # ... other configuration
-  
+
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
-  
+
   # Enable monitoring addons
   enable_vertical_pod_autoscaling = true
 }

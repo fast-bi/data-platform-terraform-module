@@ -35,7 +35,7 @@ variable "sa_description" {
 variable "wid_mapping_to_sa" {
   description = "List of namespaces and k8s sa to map to WID of gke"
   type = list(object({
-    namespace    = string
+    namespace   = string
     k8s_sa_name = string
   }))
   default = []
