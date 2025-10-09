@@ -8,4 +8,3 @@ TODO
 - Add variable to stict access to management plain, now it's allowed from 0.0.0.0/0
 - Enable Application layer secrets encryption (Done)
 - After creation of GKE deploy regional-pd storageclass (https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/regional-pd) (done)
-

@@ -15,4 +15,3 @@ variable "region" {
   description = "The region where the repository will be created."
   default     = "europe-central2"
 }
-

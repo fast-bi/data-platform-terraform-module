@@ -27,8 +27,8 @@ resource "aws_iam_policy" "kube_proxy_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "ec2:DescribeInstances",
           "ec2:DescribeSecurityGroups"
         ]
@@ -46,8 +46,8 @@ resource "aws_iam_policy" "pod_identity_agent_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "iam:GetRole",
           "iam:PassRole",
           "iam:ListRoles",
@@ -115,7 +115,7 @@ module "coredns_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name                     = "${var.cluster_name}-coredns-irsa"
+  role_name = "${var.cluster_name}-coredns-irsa"
 
   role_policy_arns = {
     policy = aws_iam_policy.coredns_policy.arn
@@ -135,7 +135,7 @@ module "kube_proxy_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name                     = "${var.cluster_name}-kube-proxy-irsa"
+  role_name = "${var.cluster_name}-kube-proxy-irsa"
 
   role_policy_arns = {
     policy = aws_iam_policy.kube_proxy_policy.arn
@@ -154,7 +154,7 @@ module "pod_identity_agent_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name                     = "${var.cluster_name}-pod-identity-agent-irsa"
+  role_name = "${var.cluster_name}-pod-identity-agent-irsa"
 
   role_policy_arns = {
     policy = aws_iam_policy.pod_identity_agent_policy.arn
@@ -200,7 +200,7 @@ module "node_monitoring_agent_irsa" {
   version = "~> 5.0"
 
   role_name = "${var.cluster_name}-node-monitoring-agent-irsa"
-  
+
   role_policy_arns = {
     policy = aws_iam_policy.node_monitoring_agent_policy.arn
   }
@@ -221,7 +221,7 @@ module "metrics_server_irsa" {
   version = "~> 5.0"
 
   role_name = "${var.cluster_name}-metrics-server-irsa"
-  
+
   role_policy_arns = {
     policy = aws_iam_policy.metrics_server_policy.arn
   }
@@ -245,8 +245,8 @@ resource "aws_iam_policy" "metrics_server_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "ec2:DescribeInstances"
         ]
         Resource = "*"

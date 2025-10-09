@@ -5,5 +5,3 @@ Also creates vpc router, Nat gateway, and default FW rule to allow network from 
 
 TODO
 - Add dependancies and timeout after VPC creation
-
-

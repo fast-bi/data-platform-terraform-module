@@ -15,25 +15,25 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.0"
   required_providers {
 
     google = {
       source  = "hashicorp/google"
-      version = "5.28.0"
+      version = "7.5.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "5.28.0"
+      version = "7.5.0"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-dns/v5.2.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-dns/v7.5.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-dns/v5.2.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-dns/v7.5.0"
   }
 
 }

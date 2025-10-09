@@ -12,7 +12,7 @@ locals {
       {
         name = var.cluster_name
         cluster = {
-          server                   = "https://${var.cluster_endpoint}"
+          server                     = "https://${var.cluster_endpoint}"
           certificate-authority-data = var.cluster_ca_certificate
         }
       }
@@ -32,9 +32,9 @@ locals {
         name = var.cluster_name
         user = {
           exec = {
-            apiVersion = "client.authentication.k8s.io/v1beta1"
-            command    = "gke-gcloud-auth-plugin"
-            installHint = "Install gke-gcloud-auth-plugin for use with kubectl by following https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_plugin"
+            apiVersion         = "client.authentication.k8s.io/v1beta1"
+            command            = "gke-gcloud-auth-plugin"
+            installHint        = "Install gke-gcloud-auth-plugin for use with kubectl by following https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_plugin"
             provideClusterInfo = true
           }
         }
@@ -50,5 +50,5 @@ resource "local_file" "kubeconfig" {
 
   # Ensure the directory exists
   directory_permission = "0755"
-  file_permission     = "0600"
-} 
+  file_permission      = "0600"
+}

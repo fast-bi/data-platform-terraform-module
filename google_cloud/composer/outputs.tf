@@ -29,4 +29,3 @@ output "composer_gke_name_short" {
 output "composer_gke_zone" {
   value = split("/", one(regex("^.*zones/(.*)$", "${google_composer_environment.composer.config.0.gke_cluster}")))[0]
 }
-

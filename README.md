@@ -121,10 +121,10 @@ inputs = {
   name        = "fastbi-cluster"
   network     = "projects/my-project/global/networks/fastbi-vpc"
   subnetwork  = "projects/my-project/regions/us-central1/subnetworks/fastbi-subnet"
-  
+
   min_node_count = "1"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -135,17 +135,17 @@ inputs = {
 ```hcl
 module "gke_cluster" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/gke-cluster"
-  
+
   project     = "my-fastbi-project"
   location    = "us-central1"
   region      = "us-central1"
   name        = "fastbi-cluster"
   network     = "projects/my-project/global/networks/fastbi-vpc"
   subnetwork  = "projects/my-project/regions/us-central1/subnetworks/fastbi-subnet"
-  
+
   min_node_count = "1"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -176,14 +176,14 @@ Each module includes comprehensive documentation:
 # 1. Create project and enable APIs
 module "project" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/create-project"
-  
+
   project_id = "fastbi-production"
   name       = "Fast.BI Production"
 }
 
 module "apis" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/enable_apis"
-  
+
   project = module.project.project_id
   apis    = ["container.googleapis.com", "compute.googleapis.com"]
 }
@@ -191,7 +191,7 @@ module "apis" {
 # 2. Create VPC and networking
 module "vpc" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/vpc-gke"
-  
+
   project = module.project.project_id
   region  = "us-central1"
   name    = "fastbi-vpc"
@@ -200,17 +200,17 @@ module "vpc" {
 # 3. Create GKE cluster
 module "gke" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/gke-cluster"
-  
+
   project     = module.project.project_id
   location    = "us-central1"
   region      = "us-central1"
   name        = "fastbi-cluster"
   network     = module.vpc.network
   subnetwork  = module.vpc.subnet
-  
+
   min_node_count = "3"
   max_node_count = "10"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -218,10 +218,10 @@ module "gke" {
 # 4. Create service accounts
 module "service_accounts" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//google_cloud/deploy_sa"
-  
+
   project  = module.project.project_id
   sa_names = ["fastbi-deploy", "fastbi-monitor"]
-  
+
   project_roles = [
     "fastbi-production=>roles/storage.admin",
     "fastbi-production=>roles/logging.logWriter"
@@ -235,7 +235,7 @@ module "service_accounts" {
 # 1. Create VPC
 module "vpc" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//aws_cloud/vpc"
-  
+
   region = "us-west-2"
   name   = "fastbi-vpc"
 }
@@ -243,13 +243,13 @@ module "vpc" {
 # 2. Create EKS cluster
 module "eks" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//aws_cloud/eks"
-  
+
   region         = "us-west-2"
   cluster_name   = "fastbi-cluster"
   cluster_version = "1.28"
   vpc_id         = module.vpc.vpc_id
   subnet_ids     = module.vpc.private_subnet_ids
-  
+
   eks_managed_node_groups = {
     main = {
       min_size     = 1
@@ -346,7 +346,7 @@ These modules are built on top of:
 
 <p align="center">
   <strong>Ready to deploy Fast.BI infrastructure?</strong><br>
-  <a href="https://fast.bi">Get Started with Fast.BI</a> • 
-  <a href="https://wiki.fast.bi">Documentation</a> • 
+  <a href="https://fast.bi">Get Started with Fast.BI</a> •
+  <a href="https://wiki.fast.bi">Documentation</a> •
   <a href="https://github.com/fast-bi/data-platform-terraform-module/issues">Report Issues</a>
 </p>

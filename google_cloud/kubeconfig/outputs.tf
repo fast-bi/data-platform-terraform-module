@@ -7,4 +7,4 @@ output "kubeconfig_content" {
   description = "The content of the generated kubeconfig file"
   value       = local_file.kubeconfig.content
   sensitive   = true
-} 
+}

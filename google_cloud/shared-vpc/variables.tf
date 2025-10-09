@@ -42,7 +42,9 @@ variable "subnets" {
       access_type           = optional(string)
       enable_private_access = optional(bool, true)
     }))
-    secondary_ip_ranges = optional(map(string))
+    secondary_ip_ranges = optional(map(object({
+      ip_cidr_range = string
+    })))
   }))
   default = []
 }
@@ -54,7 +56,7 @@ variable "shared_vpc_host" {
 }
 
 variable "subnet_iam" {
-  description = "Subnet IAM bindings in {REGION/NAME => {ROLE => [MEMBERS]} format."
+  description = "Subnet IAM bindings in {REGION/NAME => {ROLE => [MEMBERS]}} format."
   type        = map(map(list(string)))
   default     = {}
 }
@@ -110,23 +112,19 @@ variable "subnets_psc" {
   default = []
 }
 
-variable "psa_config" {
-  description = "The Private Service Access configuration for Service Networking."
-  type = object({
+variable "psa_configs" {
+  type = list(object({
     ranges        = optional(map(string))
-    export_routes = optional(bool, false)
-    import_routes = optional(bool, false)
-  })
-  default = null
-}
-variable "external_addresses" {
-  description = "Map of external address regions, keyed by name."
-  type        = map(string)
-  default     = {}
+    export_routes = optional(bool)
+    import_routes = optional(bool)
+    # add other fields that the module expects in v45...
+  }))
+  description = "List of PSA configs (new shape expected by net-vpc)."
+  default     = []
 }
 
 variable "cloud_nat" {
-  description = "Cloud Nat's to create for networks"
+  description = "Cloud NATs to create for networks"
   type = list(object({
     name                                = string
     region                              = string
@@ -134,7 +132,17 @@ variable "cloud_nat" {
     external_address_name               = string
     enable_endpoint_independent_mapping = optional(bool)
     config_min_ports_per_vm             = optional(number, 64)
-    config_source_subnets               = optional(string, "ALL_SUBNETWORKS_ALL_IP_RANGES")
+
+    config_source_subnetworks = optional(object({
+      all                 = optional(bool)
+      primary_ranges_only = optional(bool)
+      subnets = optional(list(object({
+        self_link            = string
+        config_source_ranges = list(string)
+        secondary_ranges     = optional(list(string))
+      })))
+    }))
+
     config_timeouts = optional(object({
       icmp            = number
       tcp_established = number
@@ -146,6 +154,7 @@ variable "cloud_nat" {
       tcp_transitory  = 30
       udp             = 30
     })
+
     logging_filter = optional(string)
     router_asn     = optional(number)
     router_create  = optional(bool)
@@ -154,17 +163,10 @@ variable "cloud_nat" {
       enable_dynamic_port_allocation      = optional(bool, true)
       min_ports_per_vm                    = optional(number, 512)
       max_ports_per_vm                    = optional(number, 65536)
-      })
+    }))
 
-    )
     router_name    = optional(string)
     router_network = optional(string)
-    subnetworks = optional(list(object({
-      self_link            = string,
-      config_source_ranges = list(string)
-      secondary_ranges     = list(string)
-    })))
-
   }))
   default = []
 }

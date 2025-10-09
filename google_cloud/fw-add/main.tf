@@ -11,7 +11,7 @@ module "firewall_rules" {
     source_ranges           = concat(var.ip, var.extra_ips)
     source_tags             = null
     source_service_accounts = null
-    target_tags             = ["private"]  # Changed from "private-pool" to "private" to match GKE nodes
+    target_tags             = ["private"] # Changed from "private-pool" to "private" to match GKE nodes
     target_service_accounts = null
     allow = [{
       protocol = "tcp"

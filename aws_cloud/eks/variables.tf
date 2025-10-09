@@ -10,28 +10,28 @@ variable "profile" {
 
 variable "cluster_name" {
   description = "The name of the EKS cluster"
-  type = string
+  type        = string
 }
 
 variable "cluster_version" {
   description = "The Kubernetes version for the cluster"
-  type = string
+  type        = string
 }
 
 variable "vpc_id" {
   description = "ID of the VPC where the cluster security group will be provisioned"
-  type = string
+  type        = string
 }
 
 variable "subnet_ids" {
   description = "A list of subnet IDs where the nodes/node groups will be provisioned. If control_plane_subnet_ids is not provided, the EKS cluster control plane (ENIs) will be provisioned in these subnets"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "enable_irsa" {
   description = "	Determines whether to create an OpenID Connect Provider for EKS to enable IRSA"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "self_managed_node_groups" {
@@ -43,37 +43,37 @@ variable "self_managed_node_groups" {
 variable "eks_managed_node_groups" {
   description = "Map of managed node group definitions to create"
   type        = any
-  default     = {}  
+  default     = {}
 }
 
 variable "vpc_cni_version" {
   description = "Version of the VPC CNI add-on"
   type        = string
-  default     = null  # null means latest version
+  default     = null # null means latest version
 }
 
 variable "ebs_csi_version" {
   description = "Version of the EBS CSI Driver add-on"
   type        = string
-  default     = null  # null means latest version
+  default     = null # null means latest version
 }
 
 variable "cluster_endpoint_private_access" {
   description = "(Optional) Whether the Amazon EKS private API server endpoint is enabled. Default is false."
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "cluster_endpoint_public_access" {
   description = " (Optional) Whether the Amazon EKS public API server endpoint is enabled. Default is true."
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "cluster_endpoint_public_access_cidrs" {
   description = " (Optional) List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
-  type = list(string)
-  default = ["0.0.0.0/0"]
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }
 
 variable "coredns_version" {
@@ -97,11 +97,11 @@ variable "pod_identity_agent_version" {
 variable "node_monitoring_agent_version" {
   description = "EKS Node Monitoring Agent add-on version"
   type        = string
-  default     = null  # Use the latest version available
+  default     = null # Use the latest version available
 }
 
 variable "metrics_server_version" {
   description = "Metrics Server add-on version"
   type        = string
-  default     = null  # Use appropriate version for K8s 1.32
+  default     = null # Use appropriate version for K8s 1.32
 }

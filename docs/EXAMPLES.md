@@ -92,10 +92,10 @@ inputs = {
   name        = "fastbi-cluster"
   network     = dependency.vpc.outputs.network
   subnetwork  = dependency.vpc.outputs.subnet
-  
+
   min_node_count = "1"
   max_node_count = "5"
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -150,7 +150,7 @@ inputs = {
   name       = "Fast.BI Production"
   org_id     = "123456789012"  # Your organization ID
   folder_id  = "folders/987654321098"  # Your folder ID
-  
+
   labels = {
     environment = "production"
     team        = "data-platform"
@@ -169,7 +169,7 @@ inputs = {
   project = "fastbi-production"
   region  = "us-central1"
   vpc_name = "fastbi-shared-vpc"
-  
+
   subnets = [
     {
       name                  = "fastbi-subnet-1"
@@ -194,7 +194,7 @@ inputs = {
       }
     }
   ]
-  
+
   cloud_nat = [
     {
       name     = "fastbi-nat"
@@ -222,22 +222,22 @@ inputs = {
   name        = "fastbi-prod-cluster"
   network     = dependency.shared_vpc.outputs.network
   subnetwork  = dependency.shared_vpc.outputs.subnets["fastbi-subnet-1"]
-  
+
   # Node configuration
   min_node_count = "3"
   max_node_count = "20"
   node_count     = "5"
-  
+
   # Secondary ranges
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
-  
+
   # Security settings
   enable_private_nodes = true
   disable_public_endpoint = true
   enable_workload_identity = true
   enable_secrets_database_encryption = true
-  
+
   # Master authorized networks
   master_authorized_networks_config = [{
     cidr_blocks = [{
@@ -245,23 +245,23 @@ inputs = {
       display_name = "corporate_network"
     }]
   }]
-  
+
   # Monitoring
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
-  
+
   # Autoscaling
   enable_vertical_pod_autoscaling = true
   horizontal_pod_autoscaling = true
-  
+
   # Node pool configuration
   machine_type = "e2-standard-4"
   preemptible  = false
   spot         = false
-  
+
   # Maintenance
   maintenance_start_time = "02:00"
-  
+
   # Labels
   resource_labels = {
     environment = "production"
@@ -281,12 +281,12 @@ inputs = {
   project  = "fastbi-production"
   sa_names = [
     "fastbi-deploy",
-    "fastbi-monitor", 
+    "fastbi-monitor",
     "fastbi-data",
     "fastbi-airflow",
     "fastbi-dbt"
   ]
-  
+
   project_roles = [
     "fastbi-production=>roles/storage.admin",
     "fastbi-production=>roles/logging.logWriter",
@@ -295,7 +295,7 @@ inputs = {
     "fastbi-production=>roles/bigquery.dataEditor",
     "fastbi-production=>roles/bigquery.jobUser"
   ]
-  
+
   wid_mapping_to_sa = [
     {
       namespace   = "fastbi"
@@ -370,10 +370,10 @@ terraform {
 inputs = {
   region = "us-west-2"
   name   = "fastbi-vpc"
-  
+
   availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
   cidr_block        = "10.0.0.0/16"
-  
+
   public_subnets  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnets = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
 }
@@ -395,12 +395,12 @@ inputs = {
   cluster_version = "1.28"
   vpc_id         = dependency.vpc.outputs.vpc_id
   subnet_ids     = dependency.vpc.outputs.private_subnet_ids
-  
+
   # Cluster endpoint configuration
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   cluster_endpoint_public_access_cidrs = ["10.0.0.0/8"]
-  
+
   # Managed node groups
   eks_managed_node_groups = {
     main = {
@@ -408,27 +408,27 @@ inputs = {
       max_size     = 10
       desired_size = 3
       instance_types = ["t3.medium"]
-      
+
       labels = {
         Environment = "production"
         Team        = "data-platform"
       }
-      
+
       taints = []
     }
-    
+
     spot = {
       min_size     = 0
       max_size     = 5
       desired_size = 2
       instance_types = ["t3.medium", "t3.large"]
-      
+
       labels = {
         Environment = "production"
         Team        = "data-platform"
         NodeType    = "spot"
       }
-      
+
       taints = [
         {
           key    = "spot"
@@ -438,7 +438,7 @@ inputs = {
       ]
     }
   }
-  
+
   # Add-ons
   vpc_cni_version = "v1.14.1-eksbuild.1"
   ebs_csi_version = "v1.24.1-eksbuild.1"
@@ -484,13 +484,13 @@ environments:
     max_node_count: 3
     machine_type: "e2-small"
     preemptible: true
-    
+
   staging:
     min_node_count: 2
     max_node_count: 5
     machine_type: "e2-standard-2"
     preemptible: true
-    
+
   production:
     min_node_count: 3
     max_node_count: 20
@@ -563,12 +563,12 @@ inputs = {
   name        = "fastbi-dev-cluster"
   network     = dependency.vpc.outputs.network
   subnetwork  = dependency.vpc.outputs.subnet
-  
+
   min_node_count = 1
   max_node_count = 3
   machine_type   = "e2-small"
   preemptible    = true
-  
+
   cluster_secondary_range_name = "pods"
   service_secondary_range_name = "services"
 }
@@ -659,7 +659,7 @@ dependencies {
 inputs = {
   gcp_project = dependency.gcp.outputs.project_id
   aws_region  = dependency.aws.outputs.region
-  
+
   # Cross-cloud connectivity configuration
   peering_config = {
     gcp_network = dependency.gcp.outputs.network
@@ -685,12 +685,12 @@ inputs = {
   location    = "us-central1"
   region      = "us-central1"
   name        = "fastbi-secure-cluster"
-  
+
   # Network security
   enable_private_nodes = true
   disable_public_endpoint = true
   master_ipv4_cidr_block = "172.16.0.0/28"
-  
+
   # Access control
   master_authorized_networks_config = [{
     cidr_blocks = [{
@@ -698,29 +698,29 @@ inputs = {
       display_name = "corporate_network"
     }]
   }]
-  
+
   # Encryption
   enable_secrets_database_encryption = true
   # secrets_encryption_kms_key = "projects/fastbi-secure/locations/global/keyRings/fastbi-ring/cryptoKeys/fastbi-key"
-  
+
   # Identity and access
   enable_workload_identity = true
   enable_legacy_abac = false
   enable_client_certificate_authentication = false
-  
+
   # Security features
   enable_dataplane_v2 = true
   enable_vertical_pod_autoscaling = true
-  
+
   # Monitoring and logging
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
-  
+
   # Node security
   oauth_scopes = [
     "https://www.googleapis.com/auth/cloud-platform"
   ]
-  
+
   # Labels for security
   resource_labels = {
     environment = "secure"
@@ -747,21 +747,21 @@ inputs = {
   location    = "us-central1"
   region      = "us-central1"
   name        = "fastbi-budget-cluster"
-  
+
   # Cost optimization
   min_node_count = 1
   max_node_count = 5
   machine_type   = "e2-small"
   preemptible    = true
-  
+
   # Autoscaling
   enable_vertical_pod_autoscaling = true
   horizontal_pod_autoscaling = true
-  
+
   # Maintenance
   management_auto_repair  = true
   management_auto_upgrade = true
-  
+
   # Labels for cost tracking
   resource_labels = {
     environment = "budget"

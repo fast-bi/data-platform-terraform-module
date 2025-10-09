@@ -25,4 +25,3 @@ variable "parent_folder_id" {
   type        = string
   default     = ""
 }
-

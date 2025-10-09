@@ -110,11 +110,11 @@ graph TD
     B --> C[AKS]
     C --> D[Service Principals]
     D --> E[Workload Identity]
-    
+
     B --> F[Load Balancer]
     B --> G[DNS]
     B --> H[Firewall]
-    
+
     C --> I[Storage Account]
     C --> J[Key Vault]
     C --> K[Monitor]
@@ -126,19 +126,19 @@ graph TD
 # Planned security-hardened AKS cluster
 module "aks" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//azure_cloud/aks"
-  
+
   # Network security
   private_cluster_enabled = true
   network_plugin = "azure"
-  
+
   # Identity and access
   workload_identity_enabled = true
   managed_identity_enabled = true
-  
+
   # Security features
   enable_pod_security_policy = true
   enable_network_policy = true
-  
+
   # Monitoring
   monitoring_enabled = true
   log_analytics_workspace_id = module.monitor.workspace_id
@@ -160,7 +160,7 @@ module "aks" {
 # Planned basic AKS deployment
 module "aks" {
   source = "git::https://github.com/fast-bi/data-platform-terraform-module.git//azure_cloud/aks"
-  
+
   resource_group_name = "fastbi-rg"
   location           = "East US"
   cluster_name       = "fastbi-cluster"
@@ -260,7 +260,7 @@ This module is licensed under the [MIT License](../LICENSE).
 
 <p align="center">
   <strong>Interested in Azure support?</strong><br>
-  <a href="https://github.com/fast-bi/data-platform-terraform-module/discussions">Join the Discussion</a> • 
-  <a href="https://fast.bi">Get Started with Fast.BI</a> • 
+  <a href="https://github.com/fast-bi/data-platform-terraform-module/discussions">Join the Discussion</a> •
+  <a href="https://fast.bi">Get Started with Fast.BI</a> •
   <a href="https://wiki.fast.bi">Documentation</a>
 </p>

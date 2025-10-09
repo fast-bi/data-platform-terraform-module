@@ -39,7 +39,7 @@ This module creates Google Cloud service accounts with optional key generation, 
 ```hcl
 module "deploy_sa" {
   source = "../../terraform-modules/deploy_sa"
-  
+
   project  = "my-project-id"
   sa_names = ["service-account-1", "service-account-2"]
 }
@@ -50,10 +50,10 @@ module "deploy_sa" {
 ```hcl
 module "deploy_sa" {
   source = "../../terraform-modules/deploy_sa"
-  
+
   project  = "my-project-id"
   sa_names = ["service-account-1", "service-account-2"]
-  
+
   project_roles = [
     "my-project=>roles/storage.objectViewer",
     "my-project=>roles/logging.logWriter"
@@ -66,10 +66,10 @@ module "deploy_sa" {
 ```hcl
 module "deploy_sa" {
   source = "../../terraform-modules/deploy_sa"
-  
+
   project  = "my-project-id"
   sa_names = ["service-account-1"]
-  
+
   generate_keys_for_sa = true
 }
 ```
@@ -79,10 +79,10 @@ module "deploy_sa" {
 ```hcl
 module "deploy_sa" {
   source = "../../terraform-modules/deploy_sa"
-  
+
   project  = "my-project-id"
   sa_names = ["gke-sa"]
-  
+
   wid_mapping_to_sa = [
     {
       namespace = "kube-system"
@@ -120,7 +120,7 @@ The module now includes enhanced lifecycle rules to handle existing service acco
 ### Benefits:
 
 - ✅ **First deployment**: Creates everything normally
-- ✅ **Subsequent deployments**: Does nothing, preserves everything  
+- ✅ **Subsequent deployments**: Does nothing, preserves everything
 - ✅ **No disruption**: Existing services continue working
 - ✅ **Safe for production**: Can run `terraform apply --all` without concerns
 
