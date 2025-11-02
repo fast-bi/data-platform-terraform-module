@@ -17,7 +17,7 @@ locals {
 }
 
 locals {
-  cluster_name = "${var.env}-${var.name}"
+  cluster_name = var.name
 }
 data "google_project" "project" {
   project_id = var.project
@@ -85,6 +85,15 @@ resource "google_container_cluster" "cluster" {
   remove_default_node_pool = true
 
   initial_node_count    = 1
+  
+  # Configure the initial default node pool to use the specified machine type
+  # This prevents GKE from using default e2-medium instances that may not be available
+  node_config {
+    machine_type = var.machine_type
+    disk_size_gb = 50
+    disk_type = "pd-standard"
+    image_type = "COS_CONTAINERD"
+  }
   enable_shielded_nodes = false
   # If we have an alternative default service account to use, set on the node_config so that the default node pool can
   # be created successfully.
@@ -211,6 +220,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   resource_labels = var.resource_labels
+  deletion_protection = var.deletion_protection
   depends_on = [
     google_kms_crypto_key.cluster-encryption-key,
     time_sleep.wait_for_gke_service_account,
@@ -310,7 +320,7 @@ resource "google_container_node_pool" "node_pool" {
 
 # Data source to ensure service account exists before assigning IAM roles
 data "google_service_account" "gke_service_account" {
-  account_id = "${var.env}-${var.cluster_service_account_name}"
+  account_id = var.cluster_service_account_name
   project    = var.project
 
   depends_on = [time_sleep.wait_for_gke_service_account]
@@ -355,9 +365,9 @@ module "iam_user" {
 
 # Create the GKE service account locally for better control
 resource "google_service_account" "gke_service_account" {
-  account_id   = "${var.env}-${var.cluster_service_account_name}"
+  account_id   = var.cluster_service_account_name
   project      = var.project
-  display_name = "${var.env}-${var.cluster_service_account_name}"
+  display_name = var.cluster_service_account_name
   description  = var.cluster_service_account_description
 }
 
@@ -399,7 +409,7 @@ resource "kubernetes_storage_class" "regionalpd-storageclass" {
   storage_provisioner = "pd.csi.storage.gke.io"
   reclaim_policy      = "Retain"
   parameters = {
-    type             = "pd-ssd",
+    type             = "pd-balanced",
     replication-type = "regional-pd"
   }
   volume_binding_mode = "WaitForFirstConsumer"
