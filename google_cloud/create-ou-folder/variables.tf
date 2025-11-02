@@ -26,11 +26,9 @@ variable "set_roles" {
 variable "all_folder_admins" {
   description = "List of all folder admins"
   type        = list(string)
-  default     = ["group:gcp-organization-admins@fast.bi"]
 }
 
 variable "deployer_member" {
   description = "Terraform deployer member needed to add extra permissions to allow create new project. In form of: user:{emailid}: An email address that is associated with a specific Google account. For example, alce@gmail.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. domain:{domain}: A G Suite domain (primary, instead of alias) name that represents all the users of that domain. For example, google.com or example.com."
   type        = list(string)
-  default     = ["group:gcp-organization-admins@fast.bi"]
 }

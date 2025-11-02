@@ -340,3 +340,9 @@ variable "node_locations" {
   type        = list(any)
   default     = []
 }
+
+variable "deletion_protection" {
+  description = "Whether or not to allow Terraform to destroy the cluster"
+  type        = bool
+  default     = false
+}
